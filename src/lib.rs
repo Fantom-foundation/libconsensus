@@ -14,8 +14,11 @@ pub trait Consensus<B: AsRef<u8>> {
     // type Callback<B: AsRef<u8>> = fn(data: B) -> bool;
     type Callback;
 
+    // Consensus configuration type
+    type Configuration;
+
     // Create new Consensus instance
-    fn new() -> Self;
+    fn new(cfg: Self::Configuration) -> Self;
 
     // Start up Consensus instance
     fn run();
