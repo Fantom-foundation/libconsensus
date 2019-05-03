@@ -1,3 +1,4 @@
+use std::sync::mpsc::Sender;
 
 pub trait Consensus<B: AsRef<u8>> {
     // Consensus configuration type
@@ -32,6 +33,12 @@ pub trait Consensus<B: AsRef<u8>> {
     // function with the same transaction.
     fn set_callback_timeout (&mut self, timeout: u64);
 
+    // Register a sending-half of std::sync::mpsc::channel which is used to push
+    // all finalised transaction to.
+    // It returns True on successful registration and False otherwise
+    // Several channels can be registered, they will be pushed in
+    // the order of registration.
+     fn register_channel (&mut self, sender: Sender<B>) -> bool;
 }
 
 #[cfg(test)]
