@@ -6,3 +6,4 @@ authors = ["Samuel Marks <@SamuelMarks>",
 edition = "2018"
 
 [dependencies]
+os_pipe = "0.8.0"

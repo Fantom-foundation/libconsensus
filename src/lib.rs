@@ -1,5 +1,11 @@
 use std::sync::mpsc::Sender;
+use os_pipe::PipeWriter;
 
+// Consensus trait for various distributed consensus algorithms implementations.
+// Implementations must deliver finalised transactions in the following order:
+// 1. push into all registered Rust channels
+// 2. push into all registered os_pipes
+// 3. call all registered callbacks
 pub trait Consensus<B: AsRef<u8>> {
     // Consensus configuration type
     type Configuration;
@@ -39,6 +45,13 @@ pub trait Consensus<B: AsRef<u8>> {
     // Several channels can be registered, they will be pushed in
     // the order of registration.
      fn register_channel (&mut self, sender: Sender<B>) -> bool;
+
+    // Register a PipeWriter of os_pipe::pipe; which is used to push
+    // all finalised transaction to.
+    // It returns True on successful registration and False otherwise
+    // Several pipes can be registered, they will be pushed in
+    // the order of registration.
+     fn register_os_pipe (&mut self, sender: PipeWriter) -> bool;
 }
 
 #[cfg(test)]
