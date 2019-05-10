@@ -1,7 +1,10 @@
+#[macro_use]
+extern crate serde_derive;
 use os_pipe::PipeWriter;
 use std::sync::mpsc::Sender;
 
 // Internal transaction types
+#[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
 pub enum TransactionType {
     // add new peer into list of participants
     PeerAdd,
