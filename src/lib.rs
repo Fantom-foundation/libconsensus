@@ -34,11 +34,12 @@ pub trait Consensus {
     fn shutdown();
 
     // Send a transaction into Consensus
-    fn send_transaction(&mut self, data: Self::Data);
+    // It returns True on successful send and False otherwise.
+    fn send_transaction(&mut self, data: Self::Data) -> bool;
 
     // Register a callback function which is called when a transaction
     // is finalised in the consensus.
-    // It returns True on successful registration and False otherwise
+    // It returns True on successful registration and False otherwise.
     // Several callback function can be registered, they will be called in
     // the order of registration.
     fn register_callback(&mut self, callback: fn(data: Self::Data) -> bool) -> bool;
