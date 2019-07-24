@@ -28,10 +28,10 @@ pub trait Consensus {
     fn new(cfg: Self::Configuration) -> Self;
 
     // Start up Consensus instance
-    fn run();
+    fn run(&mut self);
 
     // Shutdown Consensus instance
-    fn shutdown();
+    fn shutdown(&mut self);
 
     // Send a transaction into Consensus
     // It returns True on successful send and False otherwise.
