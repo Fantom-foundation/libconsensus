@@ -3,6 +3,18 @@ extern crate serde_derive;
 use os_pipe::PipeWriter;
 use std::sync::mpsc::Sender;
 
+// Common type for Peer ID.
+pub type PeerId = Vec<u8>;
+
+// Base peer structure; common for various consenus algorithms
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+pub struct BaseConsensusPeer {
+    #[serde(rename = "PubKeyHex")]
+    id: PeerId,
+    #[serde(rename = "NetAddr")]
+    net_addr: String,
+}
+
 // Internal transaction types
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
 pub enum TransactionType {
