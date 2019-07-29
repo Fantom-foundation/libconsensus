@@ -10,9 +10,9 @@ pub type PeerId = Vec<u8>;
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
 pub struct BaseConsensusPeer {
     #[serde(rename = "PubKeyHex")]
-    id: PeerId,
+    pub id: PeerId,
     #[serde(rename = "NetAddr")]
-    net_addr: String,
+    pub net_addr: String,
 }
 
 // Internal transaction types
