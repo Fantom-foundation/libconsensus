@@ -81,6 +81,8 @@ pub trait Consensus {
     fn register_os_pipe(&mut self, sender: PipeWriter) -> bool;
 }
 
+pub mod errors;
+
 #[cfg(test)]
 mod tests {
     #[test]
