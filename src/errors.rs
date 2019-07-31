@@ -16,3 +16,10 @@ impl From<BaseError> for Error {
         Error::Base(b)
     }
 }
+
+#[macro_export]
+macro_rules! none_error {
+    () => {
+        libconsensus::errors::Error::Base(fantom_common_rs::errors::Error::NoneError)
+    };
+}
