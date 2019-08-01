@@ -1,4 +1,4 @@
-use fantom_common_rs::errors::Error as BaseError;
+use libcommon_rs::errors::Error as BaseError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
