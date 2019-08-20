@@ -20,6 +20,6 @@ impl From<BaseError> for Error {
 #[macro_export]
 macro_rules! none_error {
     () => {
-        libconsensus::errors::Error::Base(fantom_common_rs::errors::Error::NoneError)
+        libconsensus::errors::Error::Base(libcommon_rs::errors::Error::NoneError)
     };
 }
