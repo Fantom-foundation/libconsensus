@@ -58,8 +58,8 @@ pub trait Consensus {
     // The callback function must return True when transaction is processed successfully and False otherwise.
     // The callback function will be called with the same transaction until
     // callback function returns True; a pause between  consecutive calls of the
-    // callback function with the same block will be made for the value of milliseconds
-    // set by callback_timeout() function of the Consensus trait below;
+    // callback function with the same transaction will be made for the value of milliseconds
+    // set by set_callback_timeout() function of the Consensus trait below;
     // default value of the timeout is implementation defined.
 
     // Set timeout in milliseconds between consecutive calls of the callback
