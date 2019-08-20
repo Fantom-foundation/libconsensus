@@ -9,4 +9,4 @@ edition = "2018"
 os_pipe = "0.8.0"
 serde = "1.0.91"
 serde_derive = "1.0.91"
-libcommon-rs = { git = "https://github.com/Fantom-foundation/fantom-common-rs" }
+libcommon-rs = { git = "https://github.com/Fantom-foundation/libcommon-rs" }
