@@ -28,6 +28,9 @@ pub enum TransactionType {
 
 // Consensus configuration trait
 pub trait ConsensusConfiguration<Data> {
+    // creates new consensus configuration
+    fn new() -> Self;
+
     // Register a sending-half of std::sync::mpsc::channel which is used to push
     // all finalised transaction to.
     // It returns True on successful registration and False otherwise
