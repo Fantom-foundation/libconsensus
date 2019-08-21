@@ -1,5 +1,6 @@
 #[macro_use]
 extern crate serde_derive;
+use crate::errors::Result;
 use os_pipe::PipeWriter;
 use std::sync::mpsc::Sender;
 
@@ -25,6 +26,40 @@ pub enum TransactionType {
     PeerRemove,
 }
 
+// Consensus configuration trait
+pub trait ConsensusConfiguration<Data> {
+    // Register a sending-half of std::sync::mpsc::channel which is used to push
+    // all finalised transaction to.
+    // It returns True on successful registration and False otherwise
+    // Several channels can be registered, they will be pushed in
+    // the order of registration.
+    fn register_channel(&mut self, sender: Sender<Data>) -> Result<()>;
+
+    // Register a PipeWriter of os_pipe::pipe; which is used to push
+    // all finalised transaction to.
+    // It returns True on successful registration and False otherwise
+    // Several pipes can be registered, they will be pushed in
+    // the order of registration.
+    fn register_os_pipe(&mut self, sender: PipeWriter) -> Result<()>;
+
+    // Register a callback function which is called when a transaction
+    // is finalised in the consensus.
+    // It returns True on successful registration and False otherwise.
+    // Several callback function can be registered, they will be called in
+    // the order of registration.
+    fn register_callback(&mut self, callback: fn(data: Data) -> bool) -> Result<()>;
+    // The callback function must return True when transaction is processed successfully and False otherwise.
+    // The callback function will be called with the same transaction until
+    // callback function returns True; a pause between  consecutive calls of the
+    // callback function with the same transaction will be made for the value of milliseconds
+    // set by set_callback_timeout() function of the Consensus trait below;
+    // default value of the timeout is implementation defined.
+
+    // Set timeout in milliseconds between consecutive calls of the callback
+    // function with the same transaction.
+    fn set_callback_timeout(&mut self, timeout: u64);
+}
+
 // Consensus trait for various distributed consensus algorithms implementations.
 // Implementations must deliver finalised transactions in the following order:
 // 1. push into all registered Rust channels
@@ -32,7 +67,7 @@ pub enum TransactionType {
 // 3. call all registered callbacks
 pub trait Consensus {
     // Consensus configuration type
-    type Configuration;
+    type Configuration: ConsensusConfiguration<Self::Data>;
     // Consensus data type; specify data type of events to be in consensus on order of.
     type Data: AsRef<u8>;
 
@@ -48,37 +83,6 @@ pub trait Consensus {
     // Send a transaction into Consensus
     // It returns True on successful send and False otherwise.
     fn send_transaction(&mut self, data: Self::Data) -> bool;
-
-    // Register a callback function which is called when a transaction
-    // is finalised in the consensus.
-    // It returns True on successful registration and False otherwise.
-    // Several callback function can be registered, they will be called in
-    // the order of registration.
-    fn register_callback(&mut self, callback: fn(data: Self::Data) -> bool) -> bool;
-    // The callback function must return True when transaction is processed successfully and False otherwise.
-    // The callback function will be called with the same transaction until
-    // callback function returns True; a pause between  consecutive calls of the
-    // callback function with the same transaction will be made for the value of milliseconds
-    // set by set_callback_timeout() function of the Consensus trait below;
-    // default value of the timeout is implementation defined.
-
-    // Set timeout in milliseconds between consecutive calls of the callback
-    // function with the same transaction.
-    fn set_callback_timeout(&mut self, timeout: u64);
-
-    // Register a sending-half of std::sync::mpsc::channel which is used to push
-    // all finalised transaction to.
-    // It returns True on successful registration and False otherwise
-    // Several channels can be registered, they will be pushed in
-    // the order of registration.
-    fn register_channel(&mut self, sender: Sender<Self::Data>) -> bool;
-
-    // Register a PipeWriter of os_pipe::pipe; which is used to push
-    // all finalised transaction to.
-    // It returns True on successful registration and False otherwise
-    // Several pipes can be registered, they will be pushed in
-    // the order of registration.
-    fn register_os_pipe(&mut self, sender: PipeWriter) -> bool;
 }
 
 pub mod errors;
