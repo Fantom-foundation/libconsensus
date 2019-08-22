@@ -1,6 +1,6 @@
 [package]
 name = "libconsensus"
-version = "0.0.1"
+version = "0.0.2"
 authors = ["Samuel Marks <@SamuelMarks>",
 	   "Maxim Zakharov <5158255+Maxime2@users.noreply.github.com>"]
 edition = "2018"
@@ -10,3 +10,4 @@ os_pipe = "0.8.0"
 serde = "1.0.91"
 serde_derive = "1.0.91"
 libcommon-rs = { git = "https://github.com/Fantom-foundation/libcommon-rs" }
+futures-preview = { version = "=0.3.0-alpha.17", features = ["async-await", "nightly"] }
