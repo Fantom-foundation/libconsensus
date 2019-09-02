@@ -45,10 +45,12 @@ where
     type Configuration: ConsensusConfiguration<D>;
 
     // Create new Consensus instance
-    fn new(cfg: Self::Configuration) -> Self;
+    fn new(cfg: Self::Configuration) -> Result<Self>
+    where
+        Self: Sized;
 
     // Shutdown Consensus instance
-    fn shutdown(&mut self);
+    fn shutdown(&mut self) -> Result<()>;
 
     // Send a transaction into Consensus
     // It returns True on successful send and False otherwise.
