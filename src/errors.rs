@@ -1,4 +1,5 @@
 use libcommon_rs::errors::Error as BaseError;
+use libtransport::errors::Error as TransportError;
 
 pub type Result<T> = std::result::Result<T, Error>;
 
@@ -8,12 +9,20 @@ pub enum Error {
     // Error indicating Vec<T> is reached maximum capacity and would cause
     // panic while adding next element.
     AtMaxVecCapacity,
+    Transport(TransportError),
 }
 
 impl From<BaseError> for Error {
     #[inline]
     fn from(b: BaseError) -> Error {
         Error::Base(b)
+    }
+}
+
+impl From<TransportError> for Error {
+    #[inline]
+    fn from(t: TransportError) -> Error {
+        Error::Transport(t)
     }
 }
 
