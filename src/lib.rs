@@ -1,19 +1,14 @@
-#[macro_use]
 extern crate serde_derive;
 use crate::errors::Result;
 use futures::stream::Stream;
-use libcommon_rs::peer::Peer;
-use serde::de::DeserializeOwned;
-use serde::Serialize;
-
-// Common type for Peer ID.
-pub type PeerId = Vec<u8>;
+use libcommon_rs::peer::{Peer, PeerId};
+use serde::{Deserialize, Serialize};
 
 // Base peer structure; common for various consenus algorithms
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct BaseConsensusPeer {
+pub struct BaseConsensusPeer<P> {
     #[serde(rename = "PubKeyHex")]
-    pub id: PeerId,
+    pub id: P,
     #[serde(rename = "NetAddr")]
     pub net_addr: String,
 }
@@ -37,9 +32,9 @@ pub trait ConsensusConfiguration<Data> {
 // Consensus trait for various distributed consensus algorithms implementations.
 // D is the consensus data type of events to be in consensus on order of.
 // Implementations must deliver finalised transactions as Output of the Future
-pub trait Consensus<D>: Stream<Item = D> + Drop
+pub trait Consensus<'de, D>: Stream<Item = D> + Drop
 where
-    D: Serialize + DeserializeOwned,
+    D: Serialize + Deserialize<'de>,
 {
     // Consensus configuration type
     type Configuration: ConsensusConfiguration<D>;
@@ -57,11 +52,14 @@ where
     fn send_transaction(&mut self, data: D) -> Result<()>;
 }
 
-impl Peer<PeerId> for BaseConsensusPeer {
-    fn new(id: PeerId, net_addr: String) -> Self {
+impl<P: PeerId> Peer<P> for BaseConsensusPeer<P>
+where
+    P: PeerId,
+{
+    fn new(id: P, net_addr: String) -> Self {
         BaseConsensusPeer { id, net_addr }
     }
-    fn get_id(&self) -> PeerId {
+    fn get_id(&self) -> P {
         self.id.clone()
     }
     fn get_net_addr(&self) -> String {
