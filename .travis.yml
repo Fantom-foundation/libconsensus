@@ -43,11 +43,11 @@ script:
 
 matrix:
   include:
-    - rust: stable
+    - rust: nightly
       env: BUILD_FMT=1
-    - rust: stable
+    - rust: nightly
       env: CLIPPY=1
-    - rust: stable
+    - rust: nightly
       env: CARGO_TEST=1
       notifications:
         slack:
