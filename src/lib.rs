@@ -2,7 +2,8 @@
 ///
 /// This crate defines a set of commonly used traits which can be used for various consensus
 /// implementations. The crate defines two traits: ConsensusConfiguration and Consensus. The crate
-/// also defines two base structs which are commonly used between multiple consensus algorithms.
+/// also defines a base struct (BaseConsensusPeer) which can be used between multiple consensus
+/// algorithms.
 ///
 /// For an example of an implementation of the traits, refer to the libconsensus-dag repository:
 /// https://github.com/Fantom-foundation/libconsensus-dag.
@@ -26,10 +27,10 @@ pub struct BaseConsensusPeer<P> {
 /// An enum for differentiating between transaction types which can occur in the network.
 #[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
 pub enum TransactionType {
-    // add new peer into list of participants
+    // Add new peer into list of participants.
     PeerAdd,
-    // remove a peer from the list of participants
-    // practically a suicide as it need to be signed by leaving peer pk
+    // Remove a peer from the list of participants.
+    // Practically a suicide as it need to be signed by leaving peer pk
     PeerRemove,
 }
 
