@@ -67,7 +67,7 @@ where
 
 /// A an implementation of the Peer trait (found in libcommon repository) for the BaseConsensusPeer
 /// struct (defined above).
-impl<P: PeerId> Peer<P> for BaseConsensusPeer<P>
+impl<P: PeerId, Error> Peer<P, Error> for BaseConsensusPeer<P>
 where
     P: PeerId,
 {
@@ -80,9 +80,17 @@ where
     fn get_id(&self) -> P {
         self.id.clone()
     }
-    /// Returns the net address of the peer.
-    fn get_net_addr(&self) -> String {
+    /// Returns the base address of the peer.
+    fn get_base_addr(&self) -> String {
         self.net_addr.clone()
+    }
+    /// Returns the nth net address of the peer.
+    fn get_net_addr(&self, _n: usize) -> String {
+        self.net_addr.clone()
+    }
+    fn set_net_addr(&mut self, _n: usize, addr: String) -> std::result::Result<(), Error> {
+        self.net_addr = addr;
+        Ok(())
     }
 }
 
