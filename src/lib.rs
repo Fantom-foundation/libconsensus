@@ -11,15 +11,21 @@ extern crate serde_derive;
 use crate::errors::Result;
 use futures::stream::Stream;
 use libcommon_rs::peer::{Peer, PeerId};
+use libsignature::PublicKey;
 use serde::{Deserialize, Serialize};
 
 // Base peer structure; common for various consenus algorithms
 /// A base structure for consensus peers which can be commonly used for multiple consensus algorithms.
 /// The struct take in an Id type and a net address of the peer.
 #[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
-pub struct BaseConsensusPeer<P> {
-    #[serde(rename = "PubKeyHex")]
+pub struct BaseConsensusPeer<P, PK> {
+    /// Unique id of the node; it could be the first public key of the peer,
+    /// but it is not supposed to be changed, in comparison to public key,
+    /// which could be changed.
+    #[serde(rename = "ID")]
     pub id: P,
+    #[serde(rename = "PubKeyHex")]
+    pub pub_key: PK,
     #[serde(rename = "NetAddr")]
     pub net_addr: String,
 }
@@ -67,14 +73,19 @@ where
 
 /// A an implementation of the Peer trait (found in libcommon repository) for the BaseConsensusPeer
 /// struct (defined above).
-impl<P: PeerId, Error> Peer<P, Error> for BaseConsensusPeer<P>
+impl<P, Error, PK> Peer<P, Error> for BaseConsensusPeer<P, PK>
 where
     P: PeerId,
+    PK: PublicKey,
 {
     /// Create a new instance of the BaseConsensusPeer struct. Requires an Id type and net address
     /// as inputs.
     fn new(id: P, net_addr: String) -> Self {
-        BaseConsensusPeer { id, net_addr }
+        BaseConsensusPeer {
+            id,
+            net_addr,
+            pub_key: PK::default(),
+        }
     }
     /// Returns the Id of the peer.
     fn get_id(&self) -> P {
@@ -91,6 +102,19 @@ where
     fn set_net_addr(&mut self, _n: usize, addr: String) -> std::result::Result<(), Error> {
         self.net_addr = addr;
         Ok(())
+    }
+}
+
+impl<P, PK> BaseConsensusPeer<P, PK>
+where
+    P: PeerId,
+    PK: PublicKey,
+{
+    pub fn get_public_key(&self) -> PK {
+        self.pub_key.clone()
+    }
+    pub fn set_public_key(&mut self, key: PK) {
+        self.pub_key = key;
     }
 }
 
