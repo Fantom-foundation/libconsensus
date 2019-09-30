@@ -17,7 +17,7 @@ use serde::{Deserialize, Serialize};
 // Base peer structure; common for various consenus algorithms
 /// A base structure for consensus peers which can be commonly used for multiple consensus algorithms.
 /// The struct take in an Id type and a net address of the peer.
-#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize)]
+#[derive(Clone, Debug, Deserialize, Eq, PartialEq, Serialize, Hash)]
 pub struct BaseConsensusPeer<P, PK> {
     /// Unique id of the node; it could be the first public key of the peer,
     /// but it is not supposed to be changed, in comparison to public key,
@@ -31,7 +31,7 @@ pub struct BaseConsensusPeer<P, PK> {
 }
 
 /// An enum for differentiating between transaction types which can occur in the network.
-#[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq)]
+#[derive(Serialize, Deserialize, Clone, Debug, Eq, PartialEq, Hash)]
 pub enum TransactionType {
     // Add new peer into list of participants.
     PeerAdd,
