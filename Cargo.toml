@@ -6,6 +6,7 @@ authors = ["Samuel Marks <@SamuelMarks>",
 edition = "2018"
 
 [dependencies]
+failure = "0.1.5"
 os_pipe = "0.8.0"
 serde = "1.0.91"
 serde_derive = "1.0.91"
