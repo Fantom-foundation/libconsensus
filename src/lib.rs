@@ -8,7 +8,8 @@
 /// For an example of an implementation of the traits, refer to the libconsensus-dag repository:
 /// https://github.com/Fantom-foundation/libconsensus-dag.
 extern crate serde_derive;
-#[macro_use] extern crate failure;
+#[macro_use]
+extern crate failure;
 use crate::errors::Result;
 use futures::stream::Stream;
 use libcommon_rs::peer::{Peer, PeerId};

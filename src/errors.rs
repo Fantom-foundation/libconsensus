@@ -1,7 +1,7 @@
 /// # Fantom/libconsensus/errors
 ///
 /// This file defines a set of errors which are used within the consensus traits.
-use failure::{Error as FailureError};
+use failure::Error as FailureError;
 use libcommon_rs::errors::Error as BaseError;
 use libtransport::errors::Error as TransportError;
 
