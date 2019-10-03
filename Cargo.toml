@@ -7,10 +7,10 @@ edition = "2018"
 
 [dependencies]
 failure = "0.1.5"
-os_pipe = "0.8.0"
-serde = "1.0.91"
-serde_derive = "1.0.91"
+os_pipe = "0.8.2"
+serde = "1.0.101"
+serde_derive = "1.0.101"
 libcommon-rs = { git = "https://github.com/Fantom-foundation/libcommon-rs" }
-futures-preview = { version = "=0.3.0-alpha.17", features = ["async-await", "nightly"] }
+futures-preview = { version = "0.3.0-alpha.10", features = ["async-await", "nightly"] }
 libtransport = { git = "https://github.com/Fantom-foundation/libtransport" }
 libsignature = { git = "https://github.com/Fantom-foundation/libsignature" }

@@ -8,5 +8,4 @@ Cargo.lock
 *.patch
 *~
 *.bak
-*.iml
 */.vscode
