@@ -53,7 +53,7 @@ pub trait ConsensusConfiguration<Data> {
 /// algorithms. The requires a 'Data' type (D) which will be transferred between peers. The Data
 /// type must also implement the 'Stream' trait so it can work asynchronously. Finally, all
 /// implementations must deliver finalised transactions as the output of the async future.
-pub trait Consensus<'de, D>: Stream<Item = D> + Drop
+pub trait Consensus<'de, D>: Stream<Item = D>
 where
     D: Serialize + Deserialize<'de>,
 {
