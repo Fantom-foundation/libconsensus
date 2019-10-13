@@ -1,6 +1,6 @@
 [package]
 name = "libconsensus"
-version = "0.0.4"
+version = "0.0.5"
 authors = ["Samuel Marks <@SamuelMarks>",
 	   "Maxim Zakharov <5158255+Maxime2@users.noreply.github.com>"]
 edition = "2018"
@@ -11,6 +11,6 @@ os_pipe = "0.8.2"
 serde = "1.0.101"
 serde_derive = "1.0.101"
 libcommon-rs = { git = "https://github.com/Fantom-foundation/libcommon-rs" }
-futures-preview = { version = "=0.3.0-alpha.17", features = ["async-await", "nightly"] }
-libtransport = { git = "https://github.com/Fantom-foundation/libtransport", version = "0.0.2" }
+futures-preview = { version = "=0.3.0-alpha.19", features = ["async-await"] }
+libtransport = { git = "https://github.com/Fantom-foundation/libtransport", version = "0.0.3" }
 libsignature = { git = "https://github.com/Fantom-foundation/libsignature" }
