@@ -40,3 +40,40 @@ $ cargo test
 # Format, build and test
 $ cargo make
 ```
+
+### Example
+
+#### Prelude
+```rust
+use libconsensus::ConsensusType;
+use libconsensus_dag::{DAGconfig}
+use libhash_sha3::Hash as EventHash;
+use libsignature_ed25519_dalek::{SecretKey, PublicKey, Signature};
+```
+
+**Prepare consensus configuration**
+```rust
+type Id = libsignature_ed25519_dalek::PublicKey;
+pub struct Data {
+  int d,
+};
+let consensus_type = config.read().unwrap().consensus_type.clone();
+
+let consensus_config = {
+  match consensus_type {
+      libconsensus::ConsensusType::DAG => {
+        cfg = DAGconfig::<Id, Data, SecretKey, PublicKey>::new();
+        cfg.transport_type = libtransport::TransportType::TCP;
+        cfg.store_type = libconsensus_dag::store::StoreType::Sled;
+        let (public_key, secret_key) = Signature::<EventHash>::generate_key_pair()?;
+        cfg.creator = public_key;
+        cfg.secret_key = secret_key;
+        let mut peers = libconsensus_dag::DAGPeerList::<Id, PublicKey>::new();
+        peers.get_peers_from_file('peers.json')?;
+        cfg.peers = peers;
+        cfg
+      }
+      libconsensus::ConsensusType::Unknown => panic!("unknown consensus type"),
+  }
+}
+```
