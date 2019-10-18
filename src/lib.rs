@@ -16,6 +16,14 @@ use libcommon_rs::peer::{Peer, PeerId};
 use libsignature::PublicKey;
 use serde::{Deserialize, Serialize};
 
+/// An enum for identifying various Consensus/ConsensusConfiguration types. If you implement one
+/// please add a new type here.
+#[derive(Clone)]
+pub enum ConsensusType {
+    Unknown,
+    DAG,
+}
+
 // Base peer structure; common for various consenus algorithms
 /// A base structure for consensus peers which can be commonly used for multiple consensus algorithms.
 /// The struct take in an Id type and a net address of the peer.

@@ -1,6 +1,6 @@
 [package]
 name = "libconsensus"
-version = "0.0.5"
+version = "0.0.6"
 authors = ["Samuel Marks <@SamuelMarks>",
 	   "Maxim Zakharov <5158255+Maxime2@users.noreply.github.com>"]
 edition = "2018"
